@@ -1,0 +1,187 @@
+<odoo>
+    <data>
+        <record id="new_inherit" model="ir.ui.view">
+        <field name="name">product.template</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <field name="type" position="after">
+                <field name="calories"/>
+                <field name="servingsize"/>
+                <field name="lastupdate"/>
+                <field name="dietitem"/>
+            </field>
+            <notebook>
+                <page name="Nutrition" string="Nutrition">
+                    <field name="product_template_nutiriton" widget="one2many_list">
+                        <tree string="Nutrition" editable="bottom">
+                            <field name="nutrient_id"/>
+                            <field name="product_id"/>
+                            <field name="value"/>
+                            <field name="uom"/>
+                        </tree>
+                    </field>
+                </page>
+            </notebook>
+        </field>
+      </record>
+        <record id="new_inherit2" model="ir.ui.view">
+        <field name="name">product.template</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="list_price" position="after">
+                <field name="calories"/>
+                <field name="servingsize"/>
+                <field name="lastupdate"/>
+                <field name="dietitem"/>
+            </field>
+        </field>
+      </record>
+
+
+
+
+        <record id="product_product_template_action_dietfacts" model="ir.actions.act_window">
+        <field name="name">Diet Item</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_id" ref="product.product_template_tree_view"/>
+        <field name="context">{"search_default_filter_to_sell":1}</field>
+        <field name="domain">[("dietitem","=",True)]</field>
+
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_crate">
+                click to define new product
+            </p>
+        </field>
+      </record>
+   <menuitem id="menu_product_template_action_dietfacts"
+             parent="sale.sale_menu_root"
+             action="product_product_template_action_dietfacts"
+             sequence="4"/>
+
+   <record id="menus_action_dietfacts" model="ir.actions.act_window">
+        <field name="name">Menus</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.users.meal</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_crate">
+                click to define new product
+            </p>
+        </field>
+      </record>
+
+   <menuitem id="menu_action_dietfacts"
+             name="Menus"
+             parent="sale.sale_menu_root"
+             action="menus_action_dietfacts"
+             sequence="5"/>
+
+          <record id="dietfacts_users_menus_tree" model="ir.ui.view">
+        <field name="model">res.users.meal</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+
+                <field name="mealdate"/>
+                <field name="name"/>
+                <field name="mealuser"/>
+                <field name="totalcalories" sum="Total Calories"/>
+                <field name="notes"/>
+
+            </field>
+          </record>
+
+          <record id="dietfacts_users_menus" model="ir.ui.view">
+        <field name="model">res.users.meal</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <group>
+                <field name="mealdate"/>
+                <field name="name"/>
+                <field name="mealuser"/>
+                <field name="totalcalories"/>
+                <field name="notes"/>
+            </group>
+            <notebook>
+                <page name="menuitem" string="Meal Items">
+                    <field name="item_id" widget="one2many_list">
+                        <tree string="Menu Item" editable="bottom">
+                            <field name="meal_id"/>
+                            <field name="meal_item"/>
+                            <field name="servings"/>
+                            <field name="notes"/>
+                            <field name="calories"/>
+                        </tree>
+                    </field>
+                </page>
+            </notebook>
+
+
+            </field>
+          </record>
+ <record id="product_kanban_view" model="ir.ui.view">
+            <field name="model">res.users.meal</field>
+            <field name="arch" type="xml">
+                <kanban>
+                <field name="name"/>
+                <field name="mealdate"/>
+                <field name="mealuser"/>
+                <field name="totalcalories"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div class="o_kanban_image">
+                                    <img t-att-src="kanban_image('product.product','image_small')"/>
+                                </div>
+                                <div class="oe_kanban_details">
+                                    <strong>
+                                        <field name="name"/>
+                                    </strong>
+                                    <div name="tags"/>
+                                    <strong>
+                                        <span>Date:<field name="mealdate"/></span>
+                                    </strong>
+                                    <div name="tags"/>
+                                    <div name="tags"/>
+                                    <strong>
+                                        <span>User:<field name="mealuser"/></span>
+                                    </strong>
+                                    <div name="tags"/>
+                                    <div name="tags"/>
+                                    <ul>
+                                        <li>Total:<field name="totalcalories"/></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+        <record id="product_nutirtion_menu" model="ir.actions.act_window">
+        <field name="name">nutrition Item</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">nutrition.item</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_crate">
+                click to define new nutrient
+            </p>
+        </field>
+      </record>
+   <menuitem id="menu_nutrient_item"
+             parent="sale.sale_menu_root"
+             action="product_nutirtion_menu"
+             sequence="6"/>
+
+
+
+
+
+    </data>
+</odoo>

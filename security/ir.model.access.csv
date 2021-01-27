@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_res_users_meal,access_res_users_meal,model_res_users_meal,base.group_user,1,1,1,1
+access_res_users_mealitem,access_res_users_mealitem,model_res_users_mealitem,base.group_user,1,1,1,1
+access_nutrition_item,access_nutrition_item,model_nutrition_item,base.group_user,1,1,1,1
+access_product_template_nutiriton,access_product_template_nutiriton,model_product_template_nutiriton,base.group_user,1,1,1,1
